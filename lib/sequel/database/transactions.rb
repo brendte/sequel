@@ -79,7 +79,7 @@ module Sequel
       end
 
       if retry_on = opts[:retry_on]
-        num_retries = opts.fetch(:num_retries, 5)
+        num_retries = total_retries = opts.fetch(:num_retries, 5)
         begin
           transaction(opts.merge(:retry_on=>nil, :retrying=>true), &block)
         rescue *retry_on => e
