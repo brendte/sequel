@@ -82,7 +82,7 @@ module Sequel
         num_retries = opts.fetch(:num_retries, 5)
         begin
           transaction(opts.merge(:retry_on=>nil, :retrying=>true), &block)
-        rescue *retry_on
+        rescue *retry_on => e
           puts "Retrying on error: #{e.inspect}, num_retries: #{num_retries}"
           delay = [Random.rand(1.0..2.0) * 0.05 * 2**(total_retries - num_retries), 10.0].min
           puts "Sleeping for #{delay} seconds"
