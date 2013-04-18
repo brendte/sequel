@@ -83,6 +83,8 @@ module Sequel
         begin
           transaction(opts.merge(:retry_on=>nil, :retrying=>true), &block)
         rescue *retry_on
+          delay = [Random.rand(1.0..2.0) * 0.05 * 2**(total_retries - num_retries), 10.0].min
+          sleep(delay)
           if num_retries
             num_retries -= 1
             retry if num_retries >= 0
